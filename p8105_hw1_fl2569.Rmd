@@ -10,7 +10,7 @@ output: github_document
 This problem is intended to emphasize variable types and introduce coercion; it is important to know how R treats numeric, character, and factor variables.
 
 First, load in the required tidyverse library.
-```{r setup, include = FALSE}
+```{r setup, message = FALSE}
 library(tidyverse)
 ```
 
@@ -44,3 +44,21 @@ coercion_factor <- as.numeric(q1_dataframe$vec_factor) #gives us which factor le
 ```
 
 When we try to convert character variables into numeric, we get a warning message and all values are converted to NA; thus, we couldn't take the mean. However, when we convert the factor variables into numerical, we get the factor level each variable belongs to. 
+
+
+### Problem 2
+
+This problem focuses the use of inline R code, plotting, and the behavior of ggplot for variables of different types.Remember to install the palmerpenguins package in the console! Then, load in the penguins data set. 
+```{r load_penguins, message = FALSE}
+data("penguins", package = "palmerpenguins")
+```
+
+#### Describe the dataset
+The penguins data set has `r nrow(penguins)` rows and `r ncol(penguins)` columns. The data set contains information about what species the penguins belong to (i.e., Adelie, Chinstrap, or Gentoo), what island they live on (i.e., Biscoe, Dream, or Torgersen), their bill length and depth in millimeter, the flipper length, their body mass, gender, and the year. The mean flipper length is `r mean(pull(penguins, flipper_length_mm))`.
+
+#### Create scatterplot
+Make a scatter plot of flipper length vs. bill length and color the points using the species variable. Lastly, export the scatterplot to the project directory using ggsave .
+```{r flipper_bill_scatter, warning = FALSE}
+ggplot(penguins, aes(x=bill_length_mm, y = flipper_length_mm, color=species)) + geom_point()
+ggsave("scatter_plot.pdf", height = 4, width = 6)
+```
