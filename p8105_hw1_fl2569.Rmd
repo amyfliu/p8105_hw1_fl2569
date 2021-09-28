@@ -25,3 +25,13 @@ q1_dataframe <- tibble(
   vec_factor = factor(c("Small", "Medium", "Large", "Small", "Medium", "Large","Small", "Small", "Medium", "Large"))
 )
 ```
+
+Take the mean of each variable in the data frame. 
+```{r calc_mean, eval = FALSE}
+mean_samp <- mean(q1_dataframe$norm_samp)
+mean_pos <- mean(q1_dataframe$norm_samp_pos) #returns the probability of TRUE
+mean_vector <- mean(q1_dataframe$vec_character) #Warning message: argument is not numeric or logical: returning NA
+mean_factor <- mean(q1_dataframe$vec_factor) #Warning message: argument is not numeric or logical: returning NA
+```
+
+We can take the mean of the generated normal numbers; the mean of the logic vector give us the proportion of the numbers that are positive. However, we can't take the mean of a vector or factor so NA is returned. 
