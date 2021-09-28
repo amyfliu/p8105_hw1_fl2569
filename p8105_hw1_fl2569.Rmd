@@ -1,0 +1,27 @@
+---
+title: "p8105_hw1_fl2569"
+author: "Fang Liu"
+date: "9/27/2021"
+output: github_document
+---
+
+### Problem 1
+
+This problem is intended to emphasize variable types and introduce coercion; it is important to know how R treats numeric, character, and factor variables.
+
+First, load in the required tidyverse library.
+```{r setup, include = FALSE}
+library(tidyverse)
+```
+
+Then, create the data frame containing the specified variables. 
+```{r df_create}
+set.seed(1234)
+
+q1_dataframe <- tibble(
+  norm_samp = rnorm(10),
+  norm_samp_pos = norm_samp > 0,
+  vec_character = c("hello","my", "name", "is", "Amy", "how", "are", "you", "doing", "today"),
+  vec_factor = factor(c("Small", "Medium", "Large", "Small", "Medium", "Large","Small", "Small", "Medium", "Large"))
+)
+```
