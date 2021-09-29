@@ -2,10 +2,10 @@
 title: "p8105_hw1_fl2569"
 author: "Fang Liu"
 date: "9/27/2021"
-output: github_document
+output: html_document
 ---
 
-### Problem 1
+## Problem 1
 
 This problem is intended to emphasize variable types and introduce coercion; it is important to know how R treats numeric, character, and factor variables.
 
@@ -14,7 +14,7 @@ First, load in the required tidyverse library.
 library(tidyverse)
 ```
 
-Then, create the data frame containing the specified variables. 
+#### Create the data frame
 ```{r df_create}
 set.seed(1234)
 
@@ -24,41 +24,48 @@ q1_dataframe <- tibble(
   vec_character = c("hello","my", "name", "is", "Amy", "how", "are", "you", "doing", "today"),
   vec_factor = factor(c("Small", "Medium", "Large", "Small", "Medium", "Large","Small", "Small", "Medium", "Large"))
 )
+
+q1_dataframe
 ```
 
-Take the mean of each variable in the data frame. 
-```{r calc_mean, eval = FALSE}
-mean_samp <- mean(q1_dataframe$norm_samp)
-mean_pos <- mean(q1_dataframe$norm_samp_pos) #returns the probability of TRUE
-mean_vector <- mean(q1_dataframe$vec_character) #Warning message: argument is not numeric or logical: returning NA
-mean_factor <- mean(q1_dataframe$vec_factor) #Warning message: argument is not numeric or logical: returning NA
+#### Take mean of each variable in the data frame
+```{r calc_mean, message = FALSE, warning=FALSE}
+mean_samp <- mean(q1_dataframe$norm_samp); mean_samp
+mean_pos <- mean(q1_dataframe$norm_samp_pos); mean_pos
+mean_vector <- mean(q1_dataframe$vec_character); mean_vector
+mean_factor <- mean(q1_dataframe$vec_factor); mean_factor
 ```
+Note that we can take the mean of a numerical and the mean of the logic vector give us the proportion of the numbers that are positive. However, we can NOT take the mean of a vector or factor so **NA** is returned.
 
-We can take the mean of the generated normal numbers; the mean of the logic vector give us the proportion of the numbers that are positive. However, we can't take the mean of a vector or factor so NA is returned. 
-
-Next, try use the **as.numeric** function to convert the logical, character, and factor variables into numericals.
-```{r as.numeric, eval = FALSE}
+Next, try use the **as.numeric** function to convert the logical, character, and factor variables into numerical
+```{r as.numeric, eval = FALSE }
 coercion_logical <- as.numeric(q1_dataframe$norm_samp_pos)
-coercion_character <- as.numeric(q1_dataframe$vec_character) #Warning message:NAs introduced by coercion 
-coercion_factor <- as.numeric(q1_dataframe$vec_factor) #gives us which factor level each variable belongs to
+coercion_character <- as.numeric(q1_dataframe$vec_character)
+coercion_factor <- as.numeric(q1_dataframe$vec_factor)
 ```
 
-When we try to convert character variables into numeric, we get a warning message and all values are converted to NA; thus, we couldn't take the mean. However, when we convert the factor variables into numerical, we get the factor level each variable belongs to. 
+When we try to convert character variables into numeric, we get a warning message and all values are converted to NA; thus, we couldn't take the mean. When we convert the factor variables into numerical, we get the factor level each variable belongs to. 
 
 
-### Problem 2
+## Problem 2
 
-This problem focuses the use of inline R code, plotting, and the behavior of ggplot for variables of different types.Remember to install the palmerpenguins package in the console! Then, load in the penguins data set. 
+This problem focuses the use of inline R code, plotting, and the behavior of ggplot for variables of different types. Remember to install the palmerpenguins package in the console before proceeding! Then, load in the penguins data set. 
 ```{r load_penguins, message = FALSE}
 data("penguins", package = "palmerpenguins")
 ```
 
 #### Describe the dataset
-The penguins data set has `r nrow(penguins)` rows and `r ncol(penguins)` columns. The data set contains information about what species the penguins belong to (i.e., Adelie, Chinstrap, or Gentoo), what island they live on (i.e., Biscoe, Dream, or Torgersen), their bill length and depth in millimeter, the flipper length, their body mass, gender, and the year. The mean flipper length is `r mean(pull(penguins, flipper_length_mm))`.
+The penguins data set has `r nrow(penguins)` rows and `r ncol(penguins)` columns or variables, which are: `r names(penguins)`. The data set contains information about what species the penguins belong to (i.e., Adelie, Chinstrap, or Gentoo), what island they live on (i.e., Biscoe, Dream, or Torgersen), their bill length and depth in millimeter, the flipper length, their body mass, gender, and the year. The mean flipper length for the penguins is about `r mean(penguins$flipper_length_mm, na.rm = TRUE)` mm (note that there are two missing values in the dataset). The summary() function can give us some key values of the data set, such as quartiles and mean of the bill length, the number of penguins in each species, the number of penguins on each island, etc.
 
-#### Create scatterplot
-Make a scatter plot of flipper length vs. bill length and color the points using the species variable. Lastly, export the scatterplot to the project directory using ggsave .
-```{r flipper_bill_scatter, warning = FALSE}
-ggplot(penguins, aes(x=bill_length_mm, y = flipper_length_mm, color=species)) + geom_point()
-ggsave("scatter_plot.pdf", height = 4, width = 6)
+```{r analyze, eval = FALSE}
+head(penguins)
+summary(penguins)
 ```
+
+#### Create scatterplot and save
+Make a scatter plot of flipper length vs. bill length and color the points using the species variable. Export the scatter plot to the project directory using ggsave().
+```{r flipper_bill_scatter, warning = FALSE}
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
+ggsave("penguins_scatter_plot.pdf", height = 4, width = 6)
+```
+From the scatter plot, we can see that there is a positive relationship between bill length and flipper length. More specifically, as the bill length increases, the flipper length increases. The color-coded species allows us to see that the Gentoo species has the longest bill and flipper length on average. 
